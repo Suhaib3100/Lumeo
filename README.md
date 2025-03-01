@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AI Short Video Generator 🎥
 
-## Getting Started
+🚧 **Status: In Progress** (Not yet ready for production) 🚧
 
-First, run the development server:
+## 📌 Overview
+**AI Short Video Generator** is a Next.js-based application that automates the process of creating short-form videos with AI-generated captions. This tool is designed for content creators looking to produce ready-to-upload videos for platforms like YouTube Shorts, Instagram Reels, and TikTok.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## ✨ Features (Planned)
+- 🎬 **Automated Short Video Generation**
+- 📝 **AI-Generated Captions** with customization options
+- 🎨 **Basic Video Editing** (Trim, Cut, Add Background Music)
+- ⏬ **Ready-to-Upload Formats** for multiple platforms
+- ☁️ **Cloud Processing Support** (optional)
+
+## 🚀 Installation
+Currently, the project is in the development phase. If you’d like to experiment with it:
+
+### Prerequisites
+- Node.js (Latest LTS recommended)
+- Yarn or npm
+
+### Steps
+```sh
+# Clone the repository
+git clone https://github.com/suhaib3100/ai-short-video.git
+cd ai-short-video
+
+# Install dependencies
+yarn install  # or npm install
+
+# Start the development server
+yarn dev  # or npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📅 Roadmap
+- [ ] Integrate AI-based captioning system
+- [ ] Add UI for video editing
+- [ ] Implement export & upload functionality
+- [ ] Optimize for production release
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🛠 Technologies Used
+- **Next.js** - React framework for SSR & SSG
+- **FFmpeg** - Video processing
+- **OpenAI/Whisper (Planned)** - Speech-to-text captioning
+- **TailwindCSS** - UI styling
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📝 License
+This project is under development and currently unlicensed. Future updates will include licensing information.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+⚡ **Contributors & Feedback**
+Feel free to contribute, open issues, or suggest features! 🚀
