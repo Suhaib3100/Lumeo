@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 export function HeroSection({
   badge,
   title,
-  description,
   actions
 }) {
   return (
@@ -33,14 +32,14 @@ export function HeroSection({
           {/* Title */}
           <h1
             className="relative z-10 inline-block animate-appear bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-4xl font-semibold leading-tight text-transparent drop-shadow-2xl sm:text-6xl sm:leading-tight md:text-8xl md:leading-tight">
-            {title}
+            Create, Caption & Upload Shorts in Seconds
           </h1>
 
           {/* Description */}
-          <p
+          {/* <p
             className="text-md relative z-10 max-w-[550px] animate-appear font-medium text-muted-foreground opacity-0 delay-100 sm:text-xl">
             {description}
-          </p>
+          </p> */}
 
           {/* Actions */}
           <div

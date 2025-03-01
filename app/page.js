@@ -1,41 +1,55 @@
+import { HeroSection } from "@/components/hero-section";
 import { Header1 } from "@/components/ui/header";
-import { ContainerScroll } from "@/components/ui/container-scroll-animation";
+import { FaGithub } from "react-icons/fa"; // Import GitHub icon from react-icons
+import { ContainerScrollAnimation } from "@/components/ui/container-scroll-animation";
 import { FeaturesSectionWithHoverEffects } from "@/components/feature-section-with-hover-effects";
+import { WorldMap } from "@/components/ui/world-map";
 
 export default function Home() {
+  const heroProps = {
+    badge: {
+      text: "Revolutionizing Shorts Creation",
+      action: {
+        text: "Learn more",
+        href: "/docs"
+      }
+    },
+    title: "Create, Caption & Upload Shorts in Seconds",
+    description: "Premium UI components built with React and Tailwind CSS. Save time and ship your next project faster with our ready-to-use components.",
+    actions: [
+      {
+        text: "Get Started",
+        href: "/docs/getting-started",
+        variant: "default"
+      },
+      {
+        text: "GitHub",
+        href: "https://github.com/your-repo",
+        variant: "glow",
+        icon: <FaGithub className="h-5 w-5" />
+      }
+    ],
+    image: {
+      light: "/images/lumeo-dark.png",
+      dark: "/images/lumeo-dark.png",
+      alt: "Lumeo Platform Preview"
+    }
+  };
+
   return (
     <div>
       <Header1 />
-      <ContainerScroll
-        titleComponent={
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-black dark:text-white mb-4 mt-8">
-            Build faster with <span className="text-blue-500">beautiful components</span>
-          </h1>
-        }
-      >
-        <div className="flex items-center justify-center h-full mt-12">
-          <img 
-            src="/images/lumeo-dark.png" 
-            alt="Lumeo Dashboard" 
-            className="w-full h-full object-cover rounded-lg shadow-xl"
-          />
-        </div>
-      </ContainerScroll>
-
+      <HeroSection {...heroProps} />
+      <ContainerScrollAnimation />
       <FeaturesSectionWithHoverEffects />
-      <div className=" py-40 dark:bg-black bg-white w-full">
-      <div className="max-w-7xl mx-auto text-center">
-        <p className="font-bold text-xl md:text-4xl dark:text-white text-black">
-          Remote{" "}
-      
-        </p>
-        <p className="text-sm md:text-lg text-neutral-500 max-w-2xl mx-auto py-4">
-          Break free from traditional boundaries. Work from anywhere, at the
-          comfort of your own studio apartment. Perfect for Nomads and
-          Travellers.
-        </p>
-      </div>
+      <WorldMap
+        dots={[
+          {
+            start: { lat: 40, lng: -74 },
+            end: { lat: 51, lng: 0 },
+          },
+        ]}
+      />
     </div>
-      </div>
   );
 }

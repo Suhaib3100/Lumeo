@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@/lib/utils";
 import {
   IconAdjustmentsBolt,
@@ -13,48 +14,43 @@ import {
 export function FeaturesSectionWithHoverEffects() {
   const features = [
     {
-      title: "Built for developers",
-      description:
-        "Built for engineers, developers, dreamers, thinkers and doers.",
+      title: "AI-Powered Shorts",
+      description: "Generate ready-to-go Shorts with captions for YouTube, Instagram, or TikTok.",
       icon: <IconTerminal2 />,
     },
     {
-      title: "Ease of use",
-      description:
-        "It's as easy as using an Apple, and as expensive as buying one.",
+      title: "Next.js Efficiency",
+      description: "Dynamic, blazing-fast content built on Next.js for seamless performance.",
       icon: <IconEaseInOut />,
     },
     {
-      title: "Pricing like no other",
-      description:
-        "Our prices are best in the market. No cap, no lock, no credit card required.",
+      title: "User-Friendly Interface",
+      description: "Simple, intuitive tools help you create and publish Shorts with minimal effort.",
       icon: <IconCurrencyDollar />,
     },
     {
-      title: "100% Uptime guarantee",
-      description: "We just cannot be taken down by anyone.",
+      title: "Professional Templates",
+      description: "Choose from curated templates designed to elevate your Shorts instantly.",
       icon: <IconCloud />,
     },
     {
-      title: "Multi-tenant Architecture",
-      description: "You can simply share passwords instead of buying new seats",
+      title: "Versatile Integrations",
+      description: "Easily connect your favorite platforms and streamline your Shorts workflow.",
       icon: <IconRouteAltLeft />,
     },
     {
-      title: "24/7 Customer Support",
-      description:
-        "We are available a 100% of the time. Atleast our AI Agents are.",
+      title: "24/7 AI Support",
+      description: "Our virtual assistants are always on standby to help with any questions.",
       icon: <IconHelp />,
     },
     {
-      title: "Money back guarantee",
-      description:
-        "If you donot like EveryAI, we will convince you to like us.",
+      title: "Instant Deployment",
+      description: "Rapidly launch new Shorts or full campaigns in a matter of seconds.",
       icon: <IconAdjustmentsBolt />,
     },
     {
-      title: "And everything else",
-      description: "I just ran out of copy ideas. Accept my sincere apologies",
+      title: "Scalable & Secure",
+      description: "Designed to grow with your needs without compromising on security.",
       icon: <IconHeart />,
     },
   ];
@@ -68,7 +64,7 @@ export function FeaturesSectionWithHoverEffects() {
   );
 }
 
-const Feature = ({
+export const Feature = ({
   title,
   description,
   icon,
