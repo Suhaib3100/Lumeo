@@ -21,46 +21,46 @@ function Header1() {
             description: "",
         },
         {
-            title: "Product",
-            description: "Managing a small business today is already tough.",
+            title: "Features",
+            description: "Discover the powerful features of Lumeo.",
             items: [
                 {
-                    title: "Reports",
-                    href: "/reports",
+                    title: "AI Editing",
+                    href: "/features/ai-editing",
                 },
                 {
-                    title: "Statistics",
-                    href: "/statistics",
+                    title: "Templates",
+                    href: "/features/templates",
                 },
                 {
-                    title: "Dashboards",
-                    href: "/dashboards",
+                    title: "Analytics",
+                    href: "/features/analytics",
                 },
                 {
-                    title: "Recordings",
-                    href: "/recordings",
+                    title: "Integrations",
+                    href: "/features/integrations",
                 },
             ],
         },
         {
-            title: "Company",
-            description: "Managing a small business today is already tough.",
+            title: "Resources",
+            description: "Learn more about using Lumeo.",
             items: [
                 {
-                    title: "About us",
-                    href: "/about",
+                    title: "Blog",
+                    href: "/resources/blog",
                 },
                 {
-                    title: "Fundraising",
-                    href: "/fundraising",
+                    title: "Tutorials",
+                    href: "/resources/tutorials",
                 },
                 {
-                    title: "Investors",
-                    href: "/investors",
+                    title: "Case Studies",
+                    href: "/resources/case-studies",
                 },
                 {
-                    title: "Contact us",
-                    href: "/contact",
+                    title: "Support",
+                    href: "/resources/support",
                 },
             ],
         },
