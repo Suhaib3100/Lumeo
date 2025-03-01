@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useSession, signOut } from "next-auth/react";
+import { useAuth, useUser } from "@clerk/nextjs";
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -13,12 +13,11 @@ import {
 import { Menu, MoveRight, X } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+
 function Header1() {
-    const { data: session } = useSession();
+    const { isSignedIn } = useAuth();
+    const { user } = useUser();
     const [isOpen, setOpen] = React.useState(false);
-    const handleSignOut = () => {
-        signOut({ callbackUrl: "/" });
-    };
 
     const navigationItems = [
         {
@@ -71,7 +70,6 @@ function Header1() {
             ],
         },
     ];
-
 
     return (
         (<header className="w-full z-40 fixed top-0 left-0 bg-background">
@@ -130,13 +128,13 @@ function Header1() {
                     <p className="font-semibold">Lumeo</p>
                 </div>
                 <div className="flex justify-end w-full gap-4">
-                    {session ? (
+                    {isSignedIn ? (
                         <>
                             <Button variant="ghost" asChild>
                                 <Link href="/dashboard">Dashboard</Link>
                             </Button>
                             <div className="border-r hidden md:inline"></div>
-                            <Button variant="outline" onClick={handleSignOut}>Sign out</Button>
+                            <Button variant="outline" onClick={() => user.signOut()}>Sign out</Button>
                         </>
                     ) : (
                         <>

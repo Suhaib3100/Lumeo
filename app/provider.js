@@ -1,11 +1,12 @@
 'use client';
 import React from 'react'
 import { ThemeProvider as NextThemesProvider } from "next-themes"
-import { SessionProvider } from "next-auth/react"
+import { Toaster } from "@/components/ui/sonner"
+import { ClerkProvider } from "@clerk/nextjs"
 
 export default function Provider({children}) {
   return (
-    <SessionProvider>
+    <ClerkProvider>
       <NextThemesProvider
         attribute="class"
         defaultTheme="dark"
@@ -13,7 +14,8 @@ export default function Provider({children}) {
         disableTransitionOnChange
       >
         {children}
+        <Toaster />
       </NextThemesProvider>
-    </SessionProvider>
+    </ClerkProvider>
   )
 }

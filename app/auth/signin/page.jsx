@@ -3,53 +3,59 @@ import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
-import {
-  IconBrandGithub,
-  IconBrandGoogle,
-} from "@tabler/icons-react";
+import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
+import { useSignIn } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 
 export default function SignInPage() {
+  const { isLoaded, signIn } = useSignIn();
   const router = useRouter();
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    if (!isLoaded) return;
+
     setIsLoading(true);
-
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get("email");
-    const password = formData.get("password");
-
     try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
+      const form = e.currentTarget;
+      const email = form.email.value;
+      const password = form.password.value;
+
+      await signIn.create({
+        identifier: email,
+        password
       });
 
-      if (result?.error) {
-        setError("Invalid credentials");
-        toast.error("Invalid credentials");
-      } else {
-        toast.success("Logged in successfully!");
-        router.push("/");
-        router.refresh();
-      }
+      toast.success("Logged in successfully!");
+      router.push("/");
     } catch (error) {
-      setError("Something went wrong");
+      console.error("Error during signin:", error);
+      toast.error(error.errors?.[0]?.message || "Invalid credentials");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleSocialSignIn = (provider) => {
-    signIn(provider, { callbackUrl: "/" });
+  const handleSocialSignIn = async (strategy) => {
+    if (!isLoaded) return;
+
+    try {
+      await signIn.authenticateWithRedirect({
+        strategy,
+        redirectUrl: "/",
+        redirectUrlComplete: "/"
+      });
+    } catch (error) {
+      console.error("OAuth error:", error);
+      toast.error("Could not connect to " + strategy);
+    }
   };
+
+  if (!isLoaded) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen w-full flex bg-gray-50 dark:bg-gray-900">
@@ -88,14 +94,8 @@ export default function SignInPage() {
               <Input id="password" name="password" placeholder="••••••••" type="password" required />
             </LabelInputContainer>
 
-            {error && (
-              <div className="mb-4 text-sm text-red-500">
-                {error}
-              </div>
-            )}
-
             <button
-              className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+              className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] disabled:cursor-not-allowed disabled:opacity-50"
               type="submit"
               disabled={isLoading}>
               {isLoading ? "Signing in..." : "Sign in →"}
@@ -107,7 +107,7 @@ export default function SignInPage() {
             <div className="flex flex-col space-y-4">
               <button
                 type="button"
-                onClick={() => handleSocialSignIn("github")}
+                onClick={() => handleSocialSignIn("oauth_github")}
                 className="relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]">
                 <IconBrandGithub className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
                 <span className="text-neutral-700 dark:text-neutral-300 text-sm">
@@ -117,7 +117,7 @@ export default function SignInPage() {
               </button>
               <button
                 type="button"
-                onClick={() => handleSocialSignIn("google")}
+                onClick={() => handleSocialSignIn("oauth_google")}
                 className="relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]">
                 <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
                 <span className="text-neutral-700 dark:text-neutral-300 text-sm">
