@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { toast } from "react-hot-toast";
+import { Eye, EyeOff } from "lucide-react";
 import {
   IconBrandGithub,
   IconBrandGoogle,
@@ -15,8 +16,12 @@ export default function SignupFormDemo() {
     firstname: "",
     lastname: "",
     email: "",
-    password: ""
+    password: "",
+    confirmPassword: ""
   });
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -28,6 +33,11 @@ export default function SignupFormDemo() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    setIsLoading(true);
     try {
       const response = await fetch("/api/auth/signup", {
         method: "POST",
@@ -49,6 +59,9 @@ export default function SignupFormDemo() {
       }
     } catch (error) {
       console.error("Error during signup:", error);
+      toast.error("An error occurred during signup");
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -97,25 +110,63 @@ export default function SignupFormDemo() {
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
-          <Input 
-            id="password" 
-            placeholder="••••••••" 
-            type="password" 
-            value={formData.password}
-            onChange={handleChange}
-          />
+          <div className="relative">
+            <Input 
+              id="password" 
+              placeholder="••••••••" 
+              type={showPassword ? "text" : "password"}
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
         </LabelInputContainer>
         <LabelInputContainer className="mb-8">
-          <Label htmlFor="twitterpassword">Confirm  password</Label>
-          <Input id="twitterpassword" placeholder="••••••••" type="twitterpassword" />
+          <Label htmlFor="confirmPassword">Confirm password</Label>
+          <div className="relative">
+            <Input 
+              id="confirmPassword" 
+              placeholder="••••••••" 
+              type={showConfirmPassword ? "text" : "password"}
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+            >
+              {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
         </LabelInputContainer>
 
+        <button
+          className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+          type="submit"
+          disabled={isLoading}>
+          {isLoading ? "Creating account..." : "Sign up →"}
+          <BottomGradient />
+        </button>
+        {/* <LabelInputContainer className="mb-8"> */}
+          {/* <Label htmlFor="twitterpassword">Confirm  password</Label> */}
+          {/* <Input id="twitterpassword" placeholder="••••••••" type="twitterpassword" />
+        </LabelInputContainer> */}
+{/* 
         <button
           className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
           type="submit">
           Sign up &rarr;
           <BottomGradient />
-        </button>
+        </button> */}
 
         <div
           className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
