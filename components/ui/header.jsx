@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useSession, signOut } from "next-auth/react";
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -10,10 +11,15 @@ import {
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { Menu, MoveRight, X } from "lucide-react";
-import { useState } from "react";
 import Link from "next/link";
-
+import React from "react";
 function Header1() {
+    const { data: session } = useSession();
+    const [isOpen, setOpen] = React.useState(false);
+    const handleSignOut = () => {
+        signOut({ callbackUrl: "/" });
+    };
+
     const navigationItems = [
         {
             title: "Home",
@@ -66,7 +72,7 @@ function Header1() {
         },
     ];
 
-    const [isOpen, setOpen] = useState(false);
+
     return (
         (<header className="w-full z-40 fixed top-0 left-0 bg-background">
             <div
@@ -124,12 +130,28 @@ function Header1() {
                     <p className="font-semibold">Lumeo</p>
                 </div>
                 <div className="flex justify-end w-full gap-4">
-                    <Button variant="ghost" className="hidden md:inline">
-                        Book a demo
-                    </Button>
-                    <div className="border-r hidden md:inline"></div>
-                    <Button variant="outline">Sign in</Button>
-                    <Button>Get started</Button>
+                    {session ? (
+                        <>
+                            <Button variant="ghost" asChild>
+                                <Link href="/dashboard">Dashboard</Link>
+                            </Button>
+                            <div className="border-r hidden md:inline"></div>
+                            <Button variant="outline" onClick={handleSignOut}>Sign out</Button>
+                        </>
+                    ) : (
+                        <>
+                            <Button variant="ghost" className="hidden md:inline">
+                                Book a demo
+                            </Button>
+                            <div className="border-r hidden md:inline"></div>
+                            <Button variant="outline" asChild>
+                                <Link href="/auth/signin">Sign in</Link>
+                            </Button>
+                            <Button asChild>
+                                <Link href="/auth/signup">Get started</Link>
+                            </Button>
+                        </>
+                    )}
                 </div>
                 <div className="flex w-12 shrink lg:hidden items-end justify-end">
                     <Button variant="ghost" onClick={() => setOpen(!isOpen)}>

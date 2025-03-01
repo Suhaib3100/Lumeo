@@ -5,7 +5,58 @@ import { ContainerScrollAnimation } from "@/components/ui/container-scroll-anima
 import { FeaturesSectionWithHoverEffects } from "@/components/feature-section-with-hover-effects";
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
 import { Pricing } from "@/components/pricing";
+import { Faq3 } from "@/components/faq3";
+import { Footerdemo } from "@/components/ui/footer-section";
 export default function Home() {
+  const demoData = {
+    heading: "Frequently Asked Questions",
+    description:
+      "Everything you need to know about Lumeo. Can't find the answer you're looking for? Feel free to contact our support team.",
+    items: [
+      {
+        id: "faq-1",
+        question: "What is Lumeo?",
+        answer:
+          "Lumeo is an AI-powered tool that helps you generate short-form videos with auto-generated captions, ready to upload on YouTube, Instagram, and TikTok.",
+      },
+      {
+        id: "faq-2",
+        question: "How does Lumeo work?",
+        answer:
+          "Simply upload your video or paste a link, and our AI will automatically generate captions, apply dynamic styles, and optimize the video for social media.",
+      },
+      {
+        id: "faq-3",
+        question: "Is there a free plan available?",
+        answer:
+          "Yes! Lumeo offers a free plan where you can generate a limited number of Shorts per month. Upgrade for unlimited access and premium features.",
+      },
+      {
+        id: "faq-4",
+        question: "Can I customize the captions and styles?",
+        answer:
+          "Absolutely! You can edit captions, choose different fonts, colors, and animations to match your brand or personal style.",
+      },
+      {
+        id: "faq-5",
+        question: "Which platforms does Lumeo support?",
+        answer:
+          "Lumeo supports export formats optimized for YouTube Shorts, Instagram Reels, and TikTok, ensuring the best quality for each platform.",
+      },
+      {
+        id: "faq-6",
+        question: "Do I need video editing skills to use Lumeo?",
+        answer:
+          "No! Lumeo is designed for both beginners and professionals. Our AI automates the editing process, so you can create stunning Shorts in seconds.",
+      },
+    ],
+    supportHeading: "Still have questions?",
+    supportDescription:
+      "Can't find the answer you're looking for? Our support team is here to help with any technical questions or concerns.",
+    supportButtonText: "Contact Support",
+    supportButtonUrl: "/contact",
+  };
+  
   const demoPlans = [
     {
       name: "BASIC",
@@ -121,13 +172,14 @@ export default function Home() {
       <ContainerScrollAnimation />
       <FeaturesSectionWithHoverEffects />
       <AnimatedTestimonials testimonials={testimonials} autoplay={true} />
-      <div className="h-[800px] overflow-y-auto rounded-lg">
       <Pricing 
         plans={demoPlans}
         title="Simple, Transparent Pricing"
         description="Choose the plan that works for you\nAll plans include access to our platform, lead generation tools, and dedicated support."
       />
+      <Faq3 {...demoData} />;
+      <Footerdemo />
     </div>
-    </div>
+    
   );
 }

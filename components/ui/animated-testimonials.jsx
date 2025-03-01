@@ -30,6 +30,7 @@ export const AnimatedTestimonials = ({
   }, [autoplay]);
 
   const randomRotateY = () => {
+    if (typeof window === 'undefined') return 0; // Return stable value for SSR
     return Math.floor(Math.random() * 21) - 10;
   };
   return (
@@ -46,7 +47,7 @@ export const AnimatedTestimonials = ({
                     opacity: 0,
                     scale: 0.9,
                     z: -100,
-                    rotate: randomRotateY(),
+                    rotate: 0, // Use stable initial value
                   }}
                   animate={{
                     opacity: isActive(index) ? 1 : 0.7,
@@ -62,7 +63,7 @@ export const AnimatedTestimonials = ({
                     opacity: 0,
                     scale: 0.9,
                     z: 100,
-                    rotate: randomRotateY(),
+                    rotate: 0, // Use stable exit value
                   }}
                   transition={{
                     duration: 0.4,
