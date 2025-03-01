@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useAuth, useUser } from "@clerk/nextjs";
+import { useAuth, useClerk } from "@clerk/nextjs";
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -16,8 +16,12 @@ import React from "react";
 
 function Header1() {
     const { isSignedIn } = useAuth();
-    const { user } = useUser();
+    const { signOut } = useClerk();
     const [isOpen, setOpen] = React.useState(false);
+
+    const handleSignOut = () => {
+        signOut();
+    };
 
     const navigationItems = [
         {
@@ -72,7 +76,7 @@ function Header1() {
     ];
 
     return (
-        (<header className="w-full z-40 fixed top-0 left-0 bg-background">
+        <header className="w-full z-40 fixed top-0 left-0 bg-background">
             <div
                 className="container relative mx-auto min-h-20 flex gap-4 flex-row lg:grid lg:grid-cols-3 items-center">
                 <div className="justify-start items-center gap-4 lg:flex hidden flex-row">
@@ -134,7 +138,7 @@ function Header1() {
                                 <Link href="/dashboard">Dashboard</Link>
                             </Button>
                             <div className="border-r hidden md:inline"></div>
-                            <Button variant="outline" onClick={() => user.signOut()}>Sign out</Button>
+                            <Button variant="outline" onClick={handleSignOut}>Sign out</Button>
                         </>
                     ) : (
                         <>
@@ -184,11 +188,22 @@ function Header1() {
                                     </div>
                                 </div>
                             ))}
+                            {isSignedIn ? (
+                                <div className="flex flex-col gap-4">
+                                    <Link href="/dashboard" className="text-lg">Dashboard</Link>
+                                    <button onClick={handleSignOut} className="text-lg text-red-500">Sign out</button>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col gap-4">
+                                    <Link href="/auth/signin" className="text-lg">Sign in</Link>
+                                    <Link href="/auth/signup" className="text-lg">Get started</Link>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
             </div>
-        </header>)
+        </header>
     );
 }
 

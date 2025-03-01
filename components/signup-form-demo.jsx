@@ -65,7 +65,11 @@ export default function SignupFormDemo() {
     } catch (error) {
       console.error("Error during signup:", error);
       const errorMessage = error.errors?.[0]?.longMessage || error.errors?.[0]?.message || "An error occurred during signup";
-      toast.error(errorMessage);
+      if (errorMessage.includes("single session mode")) {
+        toast.error("You're currently in single session mode. Please sign out of other accounts first.");
+      } else {
+        toast.error(errorMessage);
+      }
     } finally {
       setIsLoading(false);
     }

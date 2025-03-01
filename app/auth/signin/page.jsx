@@ -23,16 +23,21 @@ export default function SignInPage() {
       const email = form.email.value;
       const password = form.password.value;
 
-      await signIn.create({
+      const result = await signIn.create({
         identifier: email,
         password
       });
 
-      toast.success("Logged in successfully!");
-      router.push("/");
+      if (result.status === "complete") {
+        toast.success("Logged in successfully!");
+        router.push("/");
+      } else {
+        toast.error("Failed to sign in. Please try again.");
+      }
     } catch (error) {
       console.error("Error during signin:", error);
-      toast.error(error.errors?.[0]?.message || "Invalid credentials");
+      const errorMessage = error.errors?.[0]?.longMessage || error.errors?.[0]?.message || "An error occurred during sign in";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
