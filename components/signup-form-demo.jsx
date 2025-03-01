@@ -8,6 +8,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import { useSignUp } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
+import { ClerkCaptcha } from '@/components/ui/clerk-captcha';
 
 export default function SignupFormDemo() {
   const { isLoaded, signUp } = useSignUp();
@@ -22,6 +23,9 @@ export default function SignupFormDemo() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [showOTPModal, setShowOTPModal] = React.useState(false);
+  const [otpCode, setOTPCode] = React.useState("");
+  const [verifying, setVerifying] = React.useState(false);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -42,19 +46,26 @@ export default function SignupFormDemo() {
     setIsLoading(true);
     try {
       await signUp.create({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
         emailAddress: formData.email,
-        password: formData.password
+        password: formData.password,
+        firstName: formData.firstName,
+        lastName: formData.lastName
       });
 
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
-      
-      toast.success("Account created successfully! Please verify your email.");
-      router.push("/verify-email");
+      setShowOTPModal(true);
+      toast.success("Account created! Please enter the verification code sent to your email.");
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+      });
     } catch (error) {
       console.error("Error during signup:", error);
-      toast.error(error.errors?.[0]?.message || "An error occurred during signup");
+      const errorMessage = error.errors?.[0]?.longMessage || error.errors?.[0]?.message || "An error occurred during signup";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -79,8 +90,55 @@ export default function SignupFormDemo() {
     return null;
   }
 
+  const handleVerifyOTP = async () => {
+    if (!otpCode) {
+      toast.error("Please enter the verification code");
+      return;
+    }
+
+    setVerifying(true);
+    try {
+      await signUp.attemptEmailAddressVerification({ code: otpCode });
+      toast.success("Email verified successfully!");
+      setShowOTPModal(false);
+      router.push("/");
+    } catch (error) {
+      console.error("Error verifying email:", error);
+      toast.error(error.errors?.[0]?.message || "Invalid verification code");
+    } finally {
+      setVerifying(false);
+    }
+  };
+
   return (
-    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
+    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black relative">
+      {showOTPModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-black p-6 rounded-lg max-w-sm w-full mx-4">
+            <h3 className="text-lg font-semibold mb-4 text-neutral-800 dark:text-neutral-200">
+              Verify your email
+            </h3>
+            <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
+              Please enter the verification code sent to your email
+            </p>
+            <Input
+              type="text"
+              placeholder="Enter verification code"
+              value={otpCode}
+              onChange={(e) => setOTPCode(e.target.value)}
+              className="mb-4"
+            />
+            <button
+              onClick={handleVerifyOTP}
+              disabled={verifying}
+              className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] disabled:opacity-50"
+            >
+              {verifying ? "Verifying..." : "Verify Email"}
+              <BottomGradient />
+            </button>
+          </div>
+        </div>
+      )}
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
         Welcome to Lumeo
       </h2>
@@ -90,7 +148,7 @@ export default function SignupFormDemo() {
       <form className="my-8" onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
-            <Label htmlFor="first_name">First name</Label>
+            <Label htmlFor="firstName">First name</Label>
             <Input 
               id="firstName" 
               placeholder="Tyler" 
@@ -101,7 +159,7 @@ export default function SignupFormDemo() {
             />
           </LabelInputContainer>
           <LabelInputContainer>
-            <Label htmlFor="last_name">Last name</Label>
+            <Label htmlFor="lastName">Last name</Label>
             <Input 
               id="lastName" 
               placeholder="Durden" 
@@ -173,6 +231,8 @@ export default function SignupFormDemo() {
         </button>
 
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
+
+        <ClerkCaptcha />
 
         <div className="flex flex-col space-y-4">
           <button
